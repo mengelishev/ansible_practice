@@ -1,0 +1,26 @@
+---
+- name: Postgresql setup
+  hosts: db_servers
+  become: yes
+
+  tasks:
+  - name: Install Postgresql
+    apt: name={{ item }} state=latest
+    loop: [ "postgresql", "postgresql-contrib" ]
+     
+  - name: Start and enable Postgresql
+    service: 
+      name=postgresql 
+      state=started 
+      enabled=yes
+  
+  - name: Creating DB
+    shell: sudo -u postgres psql -c 'create database {{ item }};'
+    loop: [ 'mydb', 'myauth' ]
+
+  - name: Creating user Developer
+    shell: sudo -u postgres psql -c 'create role developer login;'
+
+  - name: Grant ALL PRIVILEGES
+    shell: sudo -u postgres psql -c 'grant all privileges on database "{{ item }}" to developer;'
+    loop: [ 'mydb', 'myauth' ]
