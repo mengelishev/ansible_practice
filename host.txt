@@ -1,0 +1,14 @@
+[proxy_servers]
+10.32.10.[5:10]
+
+[minions_servers]
+10.32.10.[64:127]
+
+[db_servers]
+10.32.10.[128:133]
+
+[monitor_servers]
+10.32.10.[200:201]
+
+[all:vars]
+ansible_user = devops
