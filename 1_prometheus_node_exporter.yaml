@@ -1,0 +1,23 @@
+---
+- name: Install prometheus-node-exporter
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Install prometheus-node-exporter
+    apt:
+      name=prometheus-node-exporter
+      state=latest
+
+  - name: Start and enable prometheus-node-exporter
+    service: 
+      name=prometheus-node-exporter 
+      state=started 
+      enabled=yes
+
+  - name: Allow port 9100
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: 9100
+      jump: ACCEPT
