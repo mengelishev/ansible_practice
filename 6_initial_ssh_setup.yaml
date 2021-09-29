@@ -1,0 +1,29 @@
+---
+- name: Initial ssh setup
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: Add devops user
+    user:
+      name: devops
+      shell: /bin/bash
+
+  - name: Add devops user to the sudoers
+    copy:
+      dest: "/etc/sudoers.d/devops"
+      content: "devops  ALL=(ALL)  NOPASSWD: ALL"
+      
+  - name: Copy SSH Key
+    authorized_key: user=devops key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" state=present
+  
+  - name: Disable ssh password authentication
+    lineinfile: 
+      dest: "/etc/ssh/sshd_config" 
+      regexp: '^PasswordAuthentication'
+      line: 'PasswordAuthentication no'
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    service: name=sshd state=restarted 
