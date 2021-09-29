@@ -1,0 +1,18 @@
+---
+# tasks file for install_prometheus
+
+- name: Install Prometheus
+  apt: 
+    name=prometheus
+    state=latest
+
+- name: Copy prometheus.yml
+  template:
+    src: templates/prometheus.yml.j2
+    dest: "/etc/prometheus/prometheus.yml"
+
+- name: Start and enable Prometheus
+  service:
+    name=prometheus
+    state=started
+    enabled=yes

@@ -1,0 +1,7 @@
+---
+- name: Install Prometheus
+  hosts: monitor_servers
+  become: yes
+
+  roles:
+    - install_prometheus
