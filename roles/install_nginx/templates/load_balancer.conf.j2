@@ -1,0 +1,12 @@
+upstream minions {
+{% for host in groups["minions_servers"] %}
+  server {{ host }}:1080;
+{% endfor %}
+}
+
+server {
+  listen 80;
+  location = / {
+    proxy_pass http://minions/;
+  }
+}

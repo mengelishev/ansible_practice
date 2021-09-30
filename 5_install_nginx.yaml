@@ -1,0 +1,7 @@
+---
+- name: Nginx setup
+  hosts: proxy_servers
+  become: yes
+
+  roles:
+    - install_nginx
