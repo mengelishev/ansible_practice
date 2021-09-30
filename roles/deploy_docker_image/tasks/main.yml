@@ -30,4 +30,4 @@
   notify: Restart Docker
 
 - name: Start “tutum/hello-world” image with 1080:80 ports 
-  shell: docker run -d -p 1080:80 tutum/hello-world
+  shell: docker run -d -p 1080:80 --restart unless-stopped tutum/hello-world
